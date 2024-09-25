@@ -169,9 +169,9 @@ const handleResetFilters = () => {
           className="border border-gray-300 rounded px-4 py-2 w-full max-w-xs"
         >
           <option value="">All Categories</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.name}>
-              {category.name}
+          {categories.map((category, index) => (
+            <option key={index} value={category}>
+              {category}
             </option>
           ))}
         </select>
