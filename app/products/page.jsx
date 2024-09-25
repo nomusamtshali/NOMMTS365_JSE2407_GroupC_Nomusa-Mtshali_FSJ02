@@ -1,7 +1,8 @@
 "use client"; // Client-side component
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+//import { useSearchParams } from "next/navigation";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import Skeleton from "../components/Skeleton";
 import Carousel from "../components/Carousel";
@@ -13,27 +14,44 @@ import Carousel from "../components/Carousel";
  * @returns {Promise<Object[]>} The fetched products.
  * @throws {Error} If the fetch operation fails.
  */
-async function fetchProducts(page = 1) {
+async function fetchProducts({page = 1, search = "", category = "", sortBy = ""}) {
   const skip = (page - 1) * 20; // Skip for pagination
   const res = await fetch(
-    `https://next-ecommerce-api.vercel.app/products?skip=${skip}&limit=20`
+    `https://next-ecommerce-api.vercel.app/products?skip=${skip}&limit=20&search=${search}&category=${category}&sort=${sortBy}`
   );
   if (!res.ok) {
     throw new Error("Failed to fetch products");
   }
   return res.json();
 }
+
+/**
+ * Fetch categories from the API.
+ * @async
+ * @returns {Promise<Object[]>} The fetched categories.
+ */
+async function fetchCategories() {
+  const res = await fetch("https://next-ecommerce-api.vercel.app/categories");
+  if (!res.ok) throw new Error("Failed to fetch categories");
+  return res.json();
+}
+
 /**
  * ProductsPage component that displays a grid of products with pagination.
  * @returns {JSX.Element} The rendered ProductsPage component.
  */
 export default function ProductsPage() {
-  const searchParams = useSearchParams();
-  const currentPage = parseInt(searchParams.get("page")) || 1;
-
+  // const searchParams = useSearchParams();
+  // const currentPage = parseInt(searchParams.get("page")) || 1;
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [sortOption, setSortOption] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     /**
@@ -43,7 +61,12 @@ export default function ProductsPage() {
     const loadProducts = async () => {
       try {
         setLoading(true); // Start loading
-        const productData = await fetchProducts(currentPage); // Fetch products
+        const productData = await fetchProducts({
+          page: currentPage,
+          search: searchTerm, 
+          category: selectedCategory,
+          sortBy: sortOption,
+        }); // Fetch products
         setProducts(productData); // Store products in state
       } catch (err) {
         setError(err.message); // Handle errors
@@ -51,23 +74,50 @@ export default function ProductsPage() {
         setLoading(false); // Stop loading
       }
     };
-    loadProducts();
-  }, [currentPage]);
+  //   loadProducts();
+  // }, [currentPage]);
 
-  /**
-   * Updates the page number in the URL.
-   * @param {number} newPage - The new page number to set.
-   */
-  const updatePageInURL = (newPage) => {
-    const url = new URL(window.location.href);
-    url.searchParams.set("page", newPage); // Update ?page= in URL
-    window.history.pushState({}, "", url);
-  };
+  async function loadCategories() {
+    try {
+      const categoryData = await fetchCategories();
+      setCategories(categoryData);
+      console.log(categoryData);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
 
-  const handlePageChange = (newPage) => {
-    updatePageInURL(newPage);
-    setLoading(true); // Set loading state
-  };
+  loadProducts();
+  loadCategories();
+}, [currentPage, searchTerm, selectedCategory, sortOption]);
+
+const handleSearchChange = (e) => setSearchTerm(e.target.value);
+const handleCategoryChange = (e) => setSelectedCategory(e.target.value);
+const handleSortChange = (e) => setSortOption(e.target.value);
+
+const handlePageChange = (newPage) => setCurrentPage(newPage);
+
+const handleResetFilters = () => {
+  setSearchTerm("");
+  setSelectedCategory("");
+  setSortOption("");
+  setCurrentPage(1);
+};
+
+  // /**
+  //  * Updates the page number in the URL.
+  //  * @param {number} newPage - The new page number to set.
+  //  */
+  // const updatePageInURL = (newPage) => {
+  //   const url = new URL(window.location.href);
+  //   url.searchParams.set("page", newPage); // Update ?page= in URL
+  //   window.history.pushState({}, "", url);
+  // };
+
+  // const handlePageChange = (newPage) => {
+  //   updatePageInURL(newPage);
+  //   setLoading(true); // Set loading state
+  // };
 
   if (loading) {
     return (
@@ -102,6 +152,47 @@ export default function ProductsPage() {
   return (
     <div className="container mx-auto px-8">
       <h1 className="text-3xl font-bold text-center mt-6 mb-6">Products</h1>
+
+      {/* Search, Category, Sort, and Reset */}
+      <div className="flex justify-between mb-4">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="border border-gray-300 rounded px-4 py-2 w-full max-w-xs"
+        />
+
+        <select
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          className="border border-gray-300 rounded px-4 py-2 w-full max-w-xs"
+        >
+          <option value="">All Categories</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={sortOption}
+          onChange={handleSortChange}
+          className="border border-gray-300 rounded px-4 py-2 w-full max-w-xs"
+        >
+          <option value="">Sort By</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+        </select>
+
+        <button
+          onClick={handleResetFilters}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Reset Filters
+        </button>
+      </div>
 
       {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
