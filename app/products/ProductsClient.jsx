@@ -9,28 +9,33 @@ import Skeleton from "../components/Skeleton";
 /**
  * This is the Client Component where search, pagination, and sorting are handled.
  */
-export default function ProductsClient({ products, categories, currentPage, fetchError }) {
+export default function ProductsClient({
+  products,
+  categories,
+  currentPage,
+  fetchError,
+}) {
   const router = useRouter(); // Initialize the router
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortOption, setSortOption] = useState("");
   const [page, setPage] = useState(currentPage);
 
-    // Handle reset filters, search, and sorting
-    const handleResetFilters = () => {
-        setSearchTerm("");
-        setSelectedCategory("");
-        setSortOption("");
-        setPage(1);
-        // Update URL to reset all filters (removing query params)
-        router.push("/products");
-      };
+  // Handle reset filters, search, and sorting
+  const handleResetFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("");
+    setSortOption("");
+    setPage(1);
+    // Update URL to reset all filters (removing query params)
+    router.push("/products");
+  };
 
   // Effect to update the URL based on current state and trigger navigation
   useEffect(() => {
     const params = new URLSearchParams({
       page,
-      search: searchTerm || "",  // Fallback to empty string if no search term
+      search: searchTerm || "", // Fallback to empty string if no search term
       category: selectedCategory || "", // Fallback to empty string
       sortBy: sortOption || "", // Fallback to empty string
     }).toString();
@@ -55,7 +60,7 @@ export default function ProductsClient({ products, categories, currentPage, fetc
   };
 
   if (fetchError) {
-    return <div className="text-red-500 text-center mt-20">{fetchError}</div>
+    return <div className="text-red-500 text-center mt-20">{fetchError}</div>;
   }
 
   return (
@@ -87,7 +92,7 @@ export default function ProductsClient({ products, categories, currentPage, fetc
 
         <select
           value={sortOption}
-          onChange={handleSortChange} 
+          onChange={handleSortChange}
           className="border border-gray-300 rounded px-4 py-2 w-full max-w-xs"
         >
           <option value="">Sort By</option>
@@ -95,21 +100,14 @@ export default function ProductsClient({ products, categories, currentPage, fetc
           <option value="price_desc">Price: High to Low</option>
         </select>
 
+        {/* Reset Filters Button */}
         <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          onClick={handleResetFilters}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
         >
-          Search
+          Reset Filters
         </button>
       </form>
-
-       {/* Reset Filters Button */}
-       <button
-        onClick={handleResetFilters}
-        className="bg-red-500 text-white px-4 py-2 mb-4 rounded hover:bg-red-600 transition-colors"
-      >
-        Reset Filters
-      </button>
 
       {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -123,10 +121,14 @@ export default function ProductsClient({ products, categories, currentPage, fetc
               <Carousel images={product.images} />
 
               {/* Product Details */}
-              <h2 className="text-lg font-semibold mb-2 truncate">{product.title}</h2>
+              <h2 className="text-lg font-semibold mb-2 truncate">
+                {product.title}
+              </h2>
               <p className="mb-2">Brand: {product.brand}</p>
               <p className="mb-2">${product.price}</p>
-              <p className="text-sm text-gray-600 mb-2">Category: {product.category}</p>
+              <p className="text-sm text-gray-600 mb-2">
+                Category: {product.category}
+              </p>
 
               {/* Action Buttons */}
               <div className="flex justify-between text-md items-center mt-4 space-x-2">
