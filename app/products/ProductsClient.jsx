@@ -68,19 +68,19 @@ export default function ProductsClient({
       <h1 className="text-3xl font-bold text-center mt-6 mb-6">Products</h1>
 
       {/* Search, Category(filter), Sort, and Reset */}
-      <form onSubmit={handleSearchSubmit} className="flex justify-between mb-4">
+      <form onSubmit={handleSearchSubmit} className="flex flex-col lg:flex-row justify-between mb-4 space-y-4 lg:space-y-0 lg:space-x-4">
         <input
           type="text"
           placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 rounded px-4 py-2 w-full max-w-xs"
+          className="border border-gray-300 rounded px-4 py-2 w-full lg:max-w-xs"
         />
 
         <select
           value={selectedCategory}
           onChange={handleCategoryChange}
-          className="border border-gray-300 rounded px-4 py-2 w-full max-w-xs"
+          className="border border-gray-300 rounded px-4 py-2 w-full lg:max-w-xs"
         >
           <option value="">All Categories</option>
           {categories.map((category, index) => (
@@ -93,7 +93,7 @@ export default function ProductsClient({
         <select
           value={sortOption}
           onChange={handleSortChange}
-          className="border border-gray-300 rounded px-4 py-2 w-full max-w-xs"
+          className="border border-gray-300 rounded px-4 py-2 w-full lg:max-w-xs"
         >
           <option value="">Sort By</option>
           <option value="price_asc">Price: Low to High</option>
