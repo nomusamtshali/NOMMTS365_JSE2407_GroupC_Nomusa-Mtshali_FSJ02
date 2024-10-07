@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Skeleton from "../../components/Skeleton";
+import Image from "next/image";
 
 /**
  * Fetches product details from the API based on the productId
@@ -128,9 +129,11 @@ export default function ProductDetail() {
           <div className="relative mb-8">
             {product.images.length > 1 ? (
               <>
-                <img
+                <Image
                   src={product.images[currentImageIndex]}
                   alt={product.title}
+                  width={500}
+                  height={500}
                   className="h-96 w-96 object-contain mx-auto rounded-lg shadow-lg"
                 />
                 {/* previous button */}
