@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"; // Use router from 'next/navigation
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import Carousel from "../components/Carousel";
 import Skeleton from "../components/Skeleton";
-import Image from "next/image";
 
 /**
  * This is the Client Component where search, pagination, and sorting are handled.
@@ -118,17 +117,10 @@ export default function ProductsClient({
               key={product.id}
               className="bg-white rounded-lg shadow-md p-4 transition-transform transform hover:scale-105 hover:shadow-lg"
             >
-              {/* Optimized Image using Next.js Image */}
-              <Image
-                src={product.images[0]} // Using the first image as the product cover
-                alt={product.title}
-                width={300}
-                height={300}
-                className="object-contain rounded-lg h-48 w-full"
-              />
+            
 
-              {/* Image Carousel */}
-              {/* <Carousel images={product.images} /> */}
+              {/* Carousel for optimized images */}
+              <Carousel images={product.images} />
 
               {/* Product Details */}
               <h2 className="text-lg font-semibold mb-2 truncate">
