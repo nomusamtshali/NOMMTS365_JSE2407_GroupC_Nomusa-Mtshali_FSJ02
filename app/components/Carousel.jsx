@@ -25,7 +25,7 @@ const Carousel = ({ images }) => {
         alt={`Image ${currentIndex + 1}`}
         width={400}
         height={400}
-        className="rounded-lg object-cover"
+        className="rounded-lg object-contain h-48 w-full"
       />
       {/* Previous and Next buttons */}
       {images.length > 1 && (
