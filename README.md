@@ -44,6 +44,14 @@
 
 - Users can navigate to individual product pages for more information.
 
+## Filtering and Sorting
+- Use the search bar to find specific products by title or brand.
+
+- Filter products by category.
+
+- Sort products by price and sort ratings by date and rating. 
+
+- Reset all filters to start your search from scratch.
 
 ## Product Details
 - The application displays detailed product information, including product description, price, and reviews.
