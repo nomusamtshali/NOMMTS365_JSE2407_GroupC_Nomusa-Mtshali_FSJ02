@@ -1,33 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
+import Image from "next/image";
 
 /**
- * A carousel component that displays a sequence of images.
- *
- * @param {object} props - The component props.
- * @param {array} props.images - An array of image URLs to display.
+ * Carousel Component that takes a list of images and allows switching between them.
+ * Uses Next.js Image for image optimization.
  */
 const Carousel = ({ images }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    if (images.length > 1) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-      }, 2000); // change image every 2 seconds
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
 
-      return () => clearInterval(interval); // cleanup interval on unmount
-    }
-  }, [images]);
+  const handlePrevious = () => {
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
+  };
 
   return (
     <div className="relative">
-      <img
-        src={images[currentImageIndex]}
-        alt="Product"
-        className="h-40 w-full object-contain rounded-t-lg mb-4"
+      <Image
+        src={images[currentIndex]} // Optimized image source
+        alt={`Image ${currentIndex + 1}`}
+        width={400}
+        height={400}
+        className="rounded-lg object-cover"
       />
+      {/* Previous and Next buttons */}
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={handlePrevious}
+            className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-black bg-opacity-50 text-white px-2 py-1 rounded"
+          >
+            ‹
+          </button>
+          <button
+            onClick={handleNext}
+            className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-black bg-opacity-50 text-white px-2 py-1 rounded"
+          >
+            ›
+          </button>
+        </>
+      )}
     </div>
   );
-};
+}
 
-export default Carousel;
+export default Carousel
