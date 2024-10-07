@@ -272,6 +272,29 @@
 import ProductsClient from "./ProductsClient";
 
 /**
+ * Generate dynamic metadata for products page.
+ */
+export async function generateMetadata({ searchParams }) {
+  const { category = "", search = "" } = searchParams;
+
+  let title = "Products";
+  let description = "Browse our wide range of products.";
+
+  if (category) {
+    title = `${category} Products`;
+    description = `Browse products in the ${category} category.`;
+  } else if (search) {
+    title = `Search results for "${search}"`;
+    description = `Browse products matching the term "${search}".`;
+  }
+
+  return {
+    title,
+    description,
+  };
+}
+
+/**
  * This is the Server Component that fetches data on the server side.
  * It passes data to the Client Component for rendering.
  */
