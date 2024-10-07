@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Use router from 'next/navigation'
+import { useRouter, useSearchParams } from "next/navigation"; // Use router from 'next/navigation'
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import Carousel from "../components/Carousel";
 import Skeleton from "../components/Skeleton";
@@ -16,9 +16,10 @@ export default function ProductsClient({
   fetchError,
 }) {
   const router = useRouter(); // Initialize the router
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [sortOption, setSortOption] = useState("");
+  const searchParams = useSearchParams(); // Access the search parameters in the URL
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || "");
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || "");
+  const [sortOption, setSortOption] = useState(searchParams.get('sortBy') || "");
   const [page, setPage] = useState(currentPage);
 
   // Handle reset filters, search, and sorting

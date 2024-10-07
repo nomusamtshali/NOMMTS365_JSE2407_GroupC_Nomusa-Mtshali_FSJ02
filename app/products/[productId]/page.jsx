@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Skeleton from "../../components/Skeleton";
 import Image from "next/image";
 
@@ -33,6 +33,8 @@ async function fetchProduct(productId) {
  */
 export default function ProductDetail() {
   const { productId } = useParams(); // get productId from the URL
+  const searchParams = useSearchParams(); //access current URL query params
+  const router = useRouter();
   const [product, setProduct] = useState(null); // store product details
   const [loading, setLoading] = useState(true); // loading state
   const [error, setError] = useState(null); // error state
@@ -115,7 +117,7 @@ export default function ProductDetail() {
   return (
     <div className="container mx-auto px-4 py-8">
       <button
-        onClick={() => window.history.back()}
+        onClick={() => window.history.back(`/products?${searchParams.toString()}`)} // go back with preserved
         className="bg-orange-500 text-white px-4 py-2 mb-8 rounded-md hover:bg-orange-600 transition-colors"
       >
         Back to Products
