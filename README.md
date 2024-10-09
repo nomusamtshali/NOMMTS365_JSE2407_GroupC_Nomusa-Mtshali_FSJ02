@@ -1,4 +1,4 @@
-# [FSJ01] Project: Challenge 1
+# [FSJ02] Project: Challenge 2
 
 # Project Overview
 
@@ -9,19 +9,23 @@
 
 1. Study and understand challenge 1 rubric provided in your student sheet.
 
-2. Study the Next e-commerce store api  API and see what endpoints you will need to fetch different pieces of data from.
+2. Clone your FSJ01 repo to a new FSJ02 repo, remember the naming convention: StudentNo_Classcode_Group_Name-Surname_FSJ02
 
-3. Code your solution in Next JS and document your code with JSDoc.
+3. Fix any errors or make any necessary improvements to the code.
 
-4. Commit changes to your Github repository (remember the naming convention: StudentNo_Classcode_Group_Name-Surname_FSJ01)
+4. Study the Next e-commerce store api  API and see what endpoints you will need to fetch different pieces of data from.
 
-5. Add a README.md file with the project info, how to set it up, technologies used and other information specified in the rubric
+5. Add features required by the rubric to your application.
 
-6. Test your application for any bugs and improvements.
+6. Commit changes to your Github repository.
 
-7. Verify that your changes have been successfully pushed to your remote GitHub repository
+7. Modify the README.md file to reflect features added and changes made.
 
-8. Submit the GitHub Repository Link to the LMS FSJ01 Submission Project Tab.
+8. Test your application for any bugs and improvements.
+
+9. Verify that your changes have been successfully pushed to your remote GitHub repository
+
+10. Submit the GitHub Repository Link to the LMS FSJ02 Submission Project Tab.
 
 
 # Technologies Used: 
